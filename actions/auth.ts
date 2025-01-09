@@ -21,7 +21,7 @@ export async function signIn(_prevState: unknown, formData: FormData) {
     return data;
   } catch (e) {
     console.log(e);
-    throw new Error("Failed to sign up");
+    throw new Error("Failed to sign In");
   }
 }
 

@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { useActionState, useMemo, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { signUp } from "@/actions/auth";
 import Input from "@/components/Input";
 import Link from "next/link";
@@ -22,20 +21,28 @@ export default function SignUp() {
   const { signUp: registerUser } = useAuth();
   const passwordMatch = form?.confirmPassword === form?.password;
 
-  useMemo(() => {
-    if (state && form?.name && form?.email) {
+  useEffect(() => {
+    if (state?.token && form?.name && form.email) {
       registerUser(state.token, form.name, form.email);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
   return (
     <>
       <section className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <header className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
+          <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900 dark:text-white">
             Welcome
           </h2>
-          <h2 className="mt-10 text-center text-xl font-bold tracking-tight text-gray-900">
+          <h2 className="mt-10 text-center text-xl font-bold tracking-tight text-gray-900 dark:text-white">
             Sign up to your account
           </h2>
         </header>
@@ -51,7 +58,7 @@ export default function SignUp() {
               type="name"
               required
               autoComplete="name"
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              onChange={handleInputChange}
             />
             <Input
               label="Email address"
@@ -62,7 +69,7 @@ export default function SignUp() {
               type="email"
               required
               autoComplete="email"
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              onChange={handleInputChange}
             />
 
             <Input
@@ -74,7 +81,7 @@ export default function SignUp() {
               placeholder="Your password"
               required
               autoComplete="current-password"
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              onChange={handleInputChange}
               error={!passwordMatch}
             />
 
@@ -87,9 +94,7 @@ export default function SignUp() {
               placeholder="Your password again"
               required
               autoComplete="current-confirmPassword"
-              onChange={(e) =>
-                setForm({ ...form, confirmPassword: e.target.value })
-              }
+              onChange={handleInputChange}
               error={!passwordMatch}
             />
             {!passwordMatch && (

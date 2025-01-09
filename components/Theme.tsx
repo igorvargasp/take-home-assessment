@@ -45,6 +45,7 @@ export const ThemeToggle = () => {
     <button
       className="absolute top-2 right-2 p-2 rounded-full bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-gray-600"
       onClick={toggleTheme}
+      data-testid={"theme-toggle"}
     >
       {isDark ? (
         <LightMode

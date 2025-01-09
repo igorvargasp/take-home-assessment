@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { useActionState, useMemo, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import Input from "@/components/Input";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
@@ -19,17 +19,25 @@ export default function SignIn() {
   } | null>(null);
   const { signIn: login } = useAuth();
 
-  useMemo(() => {
+  useEffect(() => {
     if (state && form?.email) {
       login(state.token, form.email);
     }
   }, [state]);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   return (
     <>
       <section className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <header className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-xl font-bold tracking-tight text-gray-900">
+          <h2 className="mt-10 text-center text-xl font-bold tracking-tight text-gray-900 dark:text-white">
             Sign In to your account
           </h2>
         </header>
@@ -45,7 +53,7 @@ export default function SignIn() {
               type="email"
               required
               autoComplete="email"
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              onChange={handleInputChange}
             />
 
             <Input
@@ -57,7 +65,7 @@ export default function SignIn() {
               placeholder="Your password"
               required
               autoComplete="current-password"
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              onChange={handleInputChange}
             />
 
             <div>
@@ -65,7 +73,7 @@ export default function SignIn() {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign Up
+                Sign In
               </button>
             </div>
           </form>
@@ -84,7 +92,7 @@ export default function SignIn() {
                   loading
                 </svg>
               ) : (
-                "Sign In"
+                "Sign Up"
               )}
             </Link>
           </p>
