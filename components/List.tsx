@@ -79,6 +79,7 @@ export const List = ({
                   });
                   openUpdateModal();
                 }}
+                data-cy="update-user"
               >
                 <div className="mr-4 grid place-items-center">
                   <Image
@@ -104,6 +105,7 @@ export const List = ({
                     e.stopPropagation();
                     deleteUser(user.email);
                   }}
+                  data-cy="delete-user"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
