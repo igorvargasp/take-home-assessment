@@ -1,5 +1,7 @@
 import { Modal } from "@mui/material";
 import Input from "./Input";
+import { ThemeContext } from "./Theme";
+import { useContext } from "react";
 
 interface ModalProps {
   open: boolean;
@@ -23,7 +25,8 @@ export const CustomModal = ({
   title,
   handleSubmit,
 }: ModalProps) => {
-  console.log(form);
+  const { isDark } = useContext(ThemeContext);
+
   return (
     <Modal
       open={open}
@@ -31,8 +34,18 @@ export const CustomModal = ({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-lg p-6 shadow-lg">
-        <h2 className="text-xl font-bold mb-5">{title}</h2>
+      <div
+        className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md ${
+          isDark ? "bg-[#121212]" : "bg-white"
+        } rounded-lg p-6 shadow-lg dark:bg-zinc-900`}
+      >
+        <h2
+          className={`text-xl font-bold mb-5 ${
+            isDark ? "text-white" : "text-black"
+          }`}
+        >
+          {title}
+        </h2>
         <form className="space-y-2">
           <Input
             htmlFor="name"
@@ -63,6 +76,7 @@ export const CustomModal = ({
               type="button"
               className="flex justify-center w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               onClick={handleSubmit}
+              disabled={!form.name || !form.email}
             >
               <span>Confirm</span>
             </button>

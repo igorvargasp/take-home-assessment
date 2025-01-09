@@ -93,7 +93,9 @@ export default function Dashboard() {
 
   return (
     <section className="flex flex-col items-center justify-center gap-4 px-6 py-12 text-center ">
-      <h1 className="text-4xl font-bold text-start my-10">Dashboard</h1>
+      <h1 className="text-4xl font-bold text-start my-10 dark:text-white">
+        Dashboard
+      </h1>
       <div className="flex w-96">
         <button
           onClick={() => {

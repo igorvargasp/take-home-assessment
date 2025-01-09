@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import Image from "next/image";
 import Pagination from "@mui/material/Pagination";
 import { Data } from "@/app/(root)/welcome/page";
+import { ThemeContext } from "./Theme";
 
 interface ListProps {
   userList: Data | undefined;
@@ -28,6 +29,7 @@ export const List = ({
 }: ListProps) => {
   const [page, setPage] = useState(1);
   const { user } = useAuth();
+  const { isDark } = useContext(ThemeContext);
 
   const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -62,14 +64,14 @@ export const List = ({
 
   return (
     <>
-      <section className="relative flex w-96 flex-col rounded-lg border border-slate-200 bg-white shadow-sm">
+      <section className="relative flex w-96 flex-col rounded-lg border border-slate-200 bg-white shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
         <nav className="flex min-w-[240px] flex-col gap-1 p-1.5">
           {userList?.data
             .map((user, index: number) => (
               <div
                 key={index}
                 role="button"
-                className="text-slate-800 flex w-full items-center justify-between rounded-md p-3 transition-all hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100"
+                className="text-slate-800 flex w-full items-center justify-between rounded-md p-3 transition-all hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100 dark:hover:bg-zinc-800 dark:focus:bg-zinc-800 dark:active:bg-zinc-800 shadow-sm"
                 onClick={() => {
                   setForm({
                     email: user.email,
@@ -88,10 +90,12 @@ export const List = ({
                   />
                 </div>
                 <div>
-                  <h6 className="text-slate-800 font-medium">
+                  <h6 className="text-slate-800 font-medium dark:text-white">
                     {user.first_name} {user.last_name}
                   </h6>
-                  <p className="text-slate-500 text-sm">{user.email}</p>
+                  <p className="text-slate-500 text-sm dark:text-slate-400">
+                    {user.email}
+                  </p>
                 </div>
                 <button
                   className="rounded-md border border-transparent p-2.5 text-center text-sm transition-all text-red-600 hover:bg-red-200 focus:bg-red-200 active:bg-red-200 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -123,8 +127,16 @@ export const List = ({
         count={userList?.total_pages}
         page={page}
         onChange={handleChange}
-        variant="outlined"
-        shape="rounded"
+        variant="text"
+        sx={{
+          "   .MuiPaginationItem-root": {
+            color: isDark ? "white" : "black",
+            "&.Mui-selected": {
+              backgroundColor: isDark ? "white" : "black",
+              color: isDark ? "black" : "white",
+            },
+          },
+        }}
       />
     </>
   );
