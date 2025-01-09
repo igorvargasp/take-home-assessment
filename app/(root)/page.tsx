@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useActionState, useMemo, useState } from "react";
-import { signUp } from "@/actions/signUp";
+import { signUp } from "@/actions/auth";
 import Input from "@/components/Input";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
@@ -11,7 +11,7 @@ const initialState = {
   password: "",
 };
 
-export default function Home() {
+export default function SignUp() {
   const [state, formAction, pending] = useActionState(signUp, initialState);
   const [form, setForm] = useState<{
     name?: string;

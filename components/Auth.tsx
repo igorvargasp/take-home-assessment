@@ -12,7 +12,7 @@ interface User {
 
 export interface AuthContextProps {
   user: User | null;
-  signIn: (token: string, name: string, email: string) => void;
+  signIn: (name: string, email: string) => void;
   signUp: (token: string, name: string, email: string) => void;
   signOut: () => void;
   isAuthenticated: boolean;
@@ -24,8 +24,8 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
-  const signIn = async (token: string, name: string, email: string) => {
-    localStorage.setItem("user", JSON.stringify({ token, name, email }));
+  const signIn = async (token: string, email: string) => {
+    localStorage.setItem("user", JSON.stringify({ token, email }));
     setUser(JSON.parse(localStorage.getItem("user") as string) as User);
     router.push("/welcome");
   };
